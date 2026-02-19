@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAppState } from '../context/StateContext'
+import { HiPencil, HiTrash, HiCheck } from 'react-icons/hi2'
 import RoadmapModal from './RoadmapModal'
 import RoadmapChart from './RoadmapChart'
 import './Product.css'
@@ -77,21 +78,25 @@ const Product = () => {
                 <div
                   className="feature-checkbox"
                   onClick={() => handleToggle(item.id)}
-                ></div>
+                >
+                  {item.completed === 1 || item.completed === true ? <HiCheck /> : null}
+                </div>
                 <div className="feature-text">{item.title}</div>
                 {item.tag && <span className="feature-tag">{item.tag}</span>}
                 <div className="feature-actions">
                   <button
                     className="btn-edit"
                     onClick={() => handleEdit(item)}
+                    title="Редактировать"
                   >
-                    ✏️
+                    <HiPencil />
                   </button>
                   <button
                     className="btn-delete"
                     onClick={() => handleDelete(item.id)}
+                    title="Удалить"
                   >
-                    🗑️
+                    <HiTrash />
                   </button>
                 </div>
               </li>

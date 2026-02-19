@@ -4,20 +4,26 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:api": "node server-dev.js",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:api\"",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@vercel/kv": "^0.2.1",
     "chart.js": "^4.4.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
-    "@vercel/kv": "^0.2.1"
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^9.2.1",
     "vite": "^5.0.8"
   }
 }

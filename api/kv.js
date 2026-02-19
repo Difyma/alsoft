@@ -43,13 +43,27 @@ if (!memoryStore.dashboard_state) {
   memoryStore.roadmap_items = defaultRoadmapData
 }
 
+let kvInstance = null
+
 export async function getKV() {
   // Пытаемся использовать Vercel KV если доступен
+  if (kvInstance !== null) {
+    return kvInstance === false ? null : kvInstance
+  }
+  
+  // Проверяем наличие переменных окружения для Vercel KV
+  if (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN) {
+    kvInstance = false
+    return null
+  }
+  
   try {
     const { kv } = await import('@vercel/kv')
+    kvInstance = kv
     return kv
   } catch (e) {
     // Fallback на in-memory хранилище
+    kvInstance = false
     return null
   }
 }
@@ -87,5 +101,36 @@ export async function setRoadmap(items) {
     await kv.set('roadmap_items', items)
   } else {
     memoryStore.roadmap_items = items
+  }
+}
+
+// In-memory хранилище для пользователей (fallback)
+let memoryUsers = {}
+
+export async function getUsers() {
+  const kv = await getKV()
+  if (kv) {
+    try {
+      const users = await kv.get('auth_users')
+      return users || {}
+    } catch (e) {
+      console.error('Error getting users from KV:', e)
+      return memoryUsers
+    }
+  }
+  return memoryUsers
+}
+
+export async function setUsers(users) {
+  const kv = await getKV()
+  if (kv) {
+    try {
+      await kv.set('auth_users', users)
+    } catch (e) {
+      console.error('Error setting users in KV:', e)
+      memoryUsers = users
+    }
+  } else {
+    memoryUsers = users
   }
 }

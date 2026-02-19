@@ -1,4 +1,5 @@
 import { useAppState } from '../context/StateContext'
+import { HiExclamationTriangle } from 'react-icons/hi2'
 import './Financial.css'
 
 const Financial = () => {
@@ -204,7 +205,7 @@ const Financial = () => {
         </table>
         
         <div className="alert" style={{ marginTop: '20px', background: 'rgba(251, 191, 36, 0.1)', borderColor: 'rgba(251, 191, 36, 0.3)' }}>
-          <div className="alert-icon">⚠️</div>
+          <div className="alert-icon"><HiExclamationTriangle /></div>
           <div className="alert-content">
             <div className="alert-title" style={{ color: '#fbbf24' }}>Точка безубыточности</div>
             <div className="alert-text">

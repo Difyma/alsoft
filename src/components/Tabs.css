@@ -18,6 +18,15 @@
     border: none;
     background: transparent;
     color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
 }
 
 .tab.active {

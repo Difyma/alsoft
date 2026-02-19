@@ -1,4 +1,5 @@
 import { useAppState } from '../context/StateContext'
+import { HiLightBulb } from 'react-icons/hi2'
 import RevenueChart from './RevenueChart'
 import './Overview.css'
 
@@ -105,7 +106,7 @@ const Overview = () => {
           </div>
           
           <div className="alert">
-            <div className="alert-icon">💡</div>
+            <div className="alert-icon"><HiLightBulb /></div>
             <div className="alert-content">
               <div className="alert-title">Рекомендация</div>
               <div className="alert-text">

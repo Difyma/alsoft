@@ -87,13 +87,15 @@
 .feature-item.completed .feature-checkbox {
     background: #22c55e;
     border-color: #22c55e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.feature-item.completed .feature-checkbox::after {
-    content: '✓';
+.feature-item.completed .feature-checkbox svg {
+    width: 14px;
+    height: 14px;
     color: white;
-    font-weight: 700;
-    font-size: 12px;
 }
 
 .feature-item.completed {
@@ -137,6 +139,15 @@
     font-size: 12px;
     font-weight: 600;
     transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-edit svg,
+.btn-delete svg {
+    width: 16px;
+    height: 16px;
 }
 
 .btn-edit {

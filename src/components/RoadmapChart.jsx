@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useAppState } from '../context/StateContext'
+import { HiCheckCircle } from 'react-icons/hi2'
+import { FaCircle } from 'react-icons/fa'
 import RoadmapModal from './RoadmapModal'
 import './RoadmapChart.css'
 
@@ -51,14 +53,18 @@ const RoadmapChart = () => {
     
     // Вычисляем позицию внутри квартала (0-3 месяца)
     const quarterWidth = 25 // 25% на квартал (3 месяца из 12)
-    const spacing = 1
+    const spacing = 2 // Увеличиваем отступ между блоками
     
     // Начало квартала в процентах
     const quarterStart = (quarter.start / 12) * 100
     
+    // Увеличиваем ширину блоков для лучшего отображения текста
+    const minItemWidth = 18 // Минимальная ширина блока в процентах
+    const calculatedWidth = Math.max((quarterWidth / itemsInQuarter) - spacing, minItemWidth)
+    
     // Позиция элемента внутри квартала
     const x = quarterStart + (quarterWidth / itemsInQuarter) * itemIndex
-    const width = (quarterWidth / itemsInQuarter) - spacing
+    const width = calculatedWidth
     
     return { x, width }
   }
@@ -106,14 +112,33 @@ const RoadmapChart = () => {
   // Вычисляем максимальную высоту для каждого квартала (с запасом под многострочный текст)
   const getQuarterHeight = (quarter) => {
     const items = getQuarterItems(quarter)
-    return items.length * 90 + 40
+    if (items.length === 0) return 80
+    // Увеличиваем высоту для каждого элемента, чтобы текст помещался
+    return items.length * 120 + 60
   }
+
+  // Вычисляем общую высоту контента
+  const totalHeight = quarters.reduce((sum, q) => sum + getQuarterHeight(q), 0) + 40
 
   let currentY = 20
 
   return (
     <>
     <div className="roadmap-chart-container">
+      {/* Add buttons for each quarter - перемещены над графиком */}
+      <div className="chart-add-buttons-top">
+        {quarters.map(quarter => (
+          <button
+            key={quarter}
+            className="chart-add-btn"
+            onClick={() => handleAdd(quarter)}
+            style={{ borderColor: getQuarterColor(quarter) }}
+          >
+            + Добавить в {quarterInfo[quarter].name}
+          </button>
+        ))}
+      </div>
+
       <div className="roadmap-chart-header">
         <div className="chart-timeline-header">
           {monthLabels.map((month, idx) => (
@@ -139,7 +164,7 @@ const RoadmapChart = () => {
         ))}
       </div>
 
-      <div className="roadmap-chart-content">
+      <div className="roadmap-chart-content" style={{ minHeight: `${totalHeight}px` }}>
         {quarters.map((quarter) => {
           const items = getQuarterItems(quarter)
           const quarterY = currentY
@@ -175,6 +200,7 @@ const RoadmapChart = () => {
                       style={{
                         left: `${pos.x}%`,
                         width: `${pos.width}%`,
+                        top: `${idx * 120}px`,
                         backgroundColor: getTagColor(item.tag),
                         opacity: isCompleted ? 0.6 : 1
                       }}
@@ -192,7 +218,7 @@ const RoadmapChart = () => {
                             onClick={(e) => handleToggle(e, item.id)}
                             title={isCompleted ? 'Отметить как невыполненное' : 'Отметить как выполненное'}
                           >
-                            {isCompleted ? '✓' : '○'}
+                            {isCompleted ? <HiCheckCircle /> : <FaCircle />}
                           </button>
                         </div>
                       </div>
@@ -203,20 +229,6 @@ const RoadmapChart = () => {
             </div>
           )
         })}
-      </div>
-
-      {/* Add buttons for each quarter */}
-      <div className="chart-add-buttons">
-        {quarters.map(quarter => (
-          <button
-            key={quarter}
-            className="chart-add-btn"
-            onClick={() => handleAdd(quarter)}
-            style={{ borderColor: getQuarterColor(quarter) }}
-          >
-            + Добавить в {quarterInfo[quarter].name}
-          </button>
-        ))}
       </div>
 
       {/* Legend */}
