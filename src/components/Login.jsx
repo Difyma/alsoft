@@ -63,12 +63,6 @@ const Login = () => {
             {loading ? 'Вход...' : 'Войти'}
           </button>
         </form>
-
-        <div className="login-footer">
-          <p className="login-hint">
-            Username: <strong>admin</strong>
-          </p>
-        </div>
       </div>
     </div>
   )
